@@ -1,0 +1,184 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/90a83926-3257-4de3-a396-0b1dc6d1c4d2/ # 
+title: ACME Banking API
+mediaType: application/json
+
+documentation:
+  - !include documentation/acmeBankHeadline.raml
+  - !include documentation/acmeBankDoc.raml
+
+types:
+  Customer: !include datatypes/Customer.raml
+  Account: !include datatypes/Account.raml
+  AccountOwner: !include datatypes/AccountOwner.raml
+  Address: !include datatypes/Address.raml
+  Bank: !include datatypes/Bank.raml
+  Money: !include datatypes/Money.raml
+  Transaction: !include datatypes/Transaction.raml
+  CustomErrorMessage: !include datatypes/CustomErrorMessage.raml
+
+/customers:
+  get:
+    description: Retrieve a list of customers
+    displayName: Get all customers
+    headers: 
+      Accept?:
+        description: Specify the media type of the response to be returned
+    responses: 
+      200:
+        headers: 
+          Cache-Control:
+            description: |
+              Activates caching and defines cache behavior through cache response directives. 
+              Usually defines public or private (cacheable by proxy or not) and max-age for resource.
+              See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html for more information.
+            example:
+              private, max-age=31536000
+          Expires:
+            type: datetime
+            description: |
+              Sets a date in RFC 1123 format(default) from which the cached resource should no longer be considered valid.
+              If both the Expires header and max-age in the Cache-Control header are set, max-age will take precedence.
+            example: Tue, 18 Apr 2017 09:30:41 GMT
+            format: rfc2616
+        body:
+          application/json:
+            type: Customer[]
+          application/xml:
+            type: Customer[]
+      404:
+        body:
+          properties:
+            statusCode: string
+            message: string
+      406:
+        body:
+          type: CustomErrorMessage
+  post:
+    description: Add a new customer
+    displayName: Add new customer
+    body:
+      type: Customer
+    responses: 
+      201:
+        headers: 
+          Location:
+            description: URL of the new customer information
+            example: /customers/8f19cb50-3f57-4d38
+        body: 
+      503:
+        body:
+          type: CustomErrorMessage
+  /{customer_id}:
+    get:
+      description: Retrieve a customer with a specific customer ID
+      displayName: Get a customer by customer ID
+      responses: 
+        200:
+          body:
+            type: Customer
+        404:
+          body:
+            type: CustomErrorMessage
+    patch:
+      description: Update a specific customer info 
+      displayName: Update a customer by customer ID
+      body:
+      responses: 
+        204:
+        501:
+          body:
+            type: CustomErrorMessage
+    delete:
+      description: Delete a specific customer
+      displayName: Delete a customer by customer ID
+      responses: 
+        200:
+          body:
+        404:
+          body:
+            type: CustomErrorMessage
+    /accounts:
+      get:
+        description: 
+        displayName: 
+        responses: 
+          200:
+            body:
+              type: Account[]
+          404:
+            body:
+              type: CustomErrorMessage
+
+/accounts:
+  post:
+    body:
+      type: Account
+    responses: 
+      201:
+        headers: 
+          Location:
+        body:
+      503:
+        body:
+          type: CustomErrorMessage
+  /{account_id}:
+    get:
+      responses: 
+        200:
+          body:
+            type: Account
+        404:
+          body:
+            type: CustomErrorMessage
+    put:
+      body:
+        type: Account
+      responses: 
+        200:
+          body:
+        201:
+          headers: 
+            Location:
+          body:
+        501:
+          body:
+            type: CustomErrorMessage 
+    delete:
+      responses: 
+        200:
+          body:
+        404:
+          body:
+            type: CustomErrorMessage
+    /transactions:
+      get:
+        responses: 
+          200:
+            body:
+              type: Transaction[]
+          404:
+            body:
+              type: CustomErrorMessage
+
+/transactions:
+  post:
+    body:
+      type: Transaction
+    responses: 
+      201:
+        headers: 
+          Location:
+        body:
+      503:
+        body:
+          type: CustomErrorMessage 
+  /{transaction_id}:
+    get:
+      responses: 
+        200:
+          body:
+            type: Transaction
+        404:
+          body:
+            type: CustomErrorMessage
