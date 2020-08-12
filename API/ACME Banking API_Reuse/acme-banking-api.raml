@@ -1,0 +1,93 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/844d9989-aaa1-44f8-afb6-3e09f71383a9/ # 
+title: ACME Banking API
+mediaType: application/json
+
+documentation:
+  - !include documentation/acmeBankHeadline.raml
+  - !include documentation/acmeBankDoc.raml
+
+types:
+  Customer: !include /exchange_modules/b2cbb96c-4219-4752-bb74-e3ec8374971a/banking-datatypes/1.0.1/datatypes/Customer.raml
+  Account: !include /exchange_modules/b2cbb96c-4219-4752-bb74-e3ec8374971a/banking-datatypes/1.0.1/datatypes/Account.raml
+  Transaction: !include /exchange_modules/b2cbb96c-4219-4752-bb74-e3ec8374971a/banking-datatypes/1.0.1/datatypes/Transaction.raml
+  CustomErrorMessage: !include datatypes/CustomErrorMessage.raml
+
+resourceTypes:
+  collection: !include resourceTypes/collection.raml
+  member: !include resourceTypes/member.raml
+
+traits:
+  cacheable: !include /exchange_modules/68ef9520-24e9-4cf2-b2f5-620025690913/training-cacheable-trait/1.0.1/Cacheable.raml
+  hasAcceptHeader: !include traits/hasAcceptHeader.raml
+
+/customers:
+  type: collection
+  post:  
+  get:
+    description: Retrieve a list of customers
+    displayName: Get all customers
+    is:
+      - cacheable
+      - hasAcceptHeader
+    responses: 
+      200:
+        body:
+          application/json:
+            type: Customer[]
+          application/xml:
+            type: Customer[]
+      404:
+        body:
+          properties:
+            statusCode: string
+            message: string
+    
+  /{customer_id}:
+    type: member
+    get:
+    patch:
+    delete:
+ 
+    /accounts:
+      get:
+        description: 
+        displayName: 
+        responses: 
+          200:
+            body:
+              type: Account[]
+          404:
+            body:
+              type: CustomErrorMessage
+
+/accounts:
+  type: collection
+  post:
+
+  /{account_id}:
+    type: member
+    get:
+    put:
+    delete:
+
+    /transactions:
+      get:
+        responses: 
+          200:
+            body:
+              type: Transaction[]
+          404:
+            body:
+              type: CustomErrorMessage
+
+/transactions:
+  type: collection
+  post:
+
+  /{transaction_id}:
+    type: member
+    get:
+
+
+
