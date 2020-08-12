@@ -12,6 +12,11 @@ post?:
           description: URL of the new <<resourcePathName | !singularize>> information
           example: /<<resourcePathName>>/8f19cb50-3f57-4d38
       body: 
+    202:
+      description: The request has been accepted for processing. Use the URI provided in the Location header of the response to monitor the status.
+      headers: 
+        Location:
+          example: /<<resourcePathName>>/1234/status
     503:
       body:
         application/json:  

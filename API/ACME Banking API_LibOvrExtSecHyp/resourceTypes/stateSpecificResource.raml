@@ -1,0 +1,28 @@
+#%RAML 1.0 ResourceType
+get:
+  responses: 
+    200:
+      description: The API is still processing the request
+      body:
+        application/json:
+           example: { status: "Working" }
+    303:
+      description: The processing has finished successfully. Use the URI provided in the Location header for more details.
+      headers: 
+        Location:
+          example: /<<resourcePathName>>/1234
+      body:
+        application/json:
+           example: { status: "Success" }
+    503:
+      description: The processing has failed
+      body:
+        application/json:
+           example: { status: "Failed" }  
+delete:
+  responses: 
+    200:
+      description: The processing has been canceled
+      body:
+        application/json:
+           example: { status: "Canceled" }
