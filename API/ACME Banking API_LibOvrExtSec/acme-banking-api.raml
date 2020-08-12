@@ -20,12 +20,19 @@ resourceTypes:
 uses:
   Traits: libraries/TraitsLibrary.raml
 
+securitySchemes: 
+  customTokenSecurity: !include securitySchemes/customTokenSecurity.raml
+  oauth2_0: !include /exchange_modules/68ef9520-24e9-4cf2-b2f5-620025690913/training-oauth20-security-scheme/1.0.1/OAuth2.raml
+
+securedBy: customTokenSecurity
+
 /customers:
   type: collection
   post:  
   get:
     description: Retrieve a list of customers
     displayName: Get all customers
+    securedBy: oauth2_0
     is:
       - Traits.cacheable
       - Traits.hasAcceptHeader
