@@ -1,0 +1,80 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/3331d740-6ea3-4c61-8494-4261b979056a/ # 
+title: ACME Banking API
+mediaType: application/json
+
+documentation:
+  - !include documentation/acmeBankHeadline.raml
+  - !include documentation/acmeBankDoc.raml
+
+types:
+  Customer: !include /exchange_modules/b2cbb96c-4219-4752-bb74-e3ec8374971a/banking-datatypes/1.0.1/datatypes/Customer.raml
+  Account: !include /exchange_modules/b2cbb96c-4219-4752-bb74-e3ec8374971a/banking-datatypes/1.0.1/datatypes/Account.raml
+  Transaction: !include /exchange_modules/b2cbb96c-4219-4752-bb74-e3ec8374971a/banking-datatypes/1.0.1/datatypes/Transaction.raml
+  CustomErrorMessage: !include datatypes/CustomErrorMessage.raml
+
+resourceTypes:
+  collection: !include resourceTypes/collection.raml
+  member: !include resourceTypes/member.raml
+
+uses:
+  Traits: libraries/TraitsLibrary.raml
+
+/customers:
+  type: collection
+  post:  
+  get:
+    description: Retrieve a list of customers
+    displayName: Get all customers
+    is:
+      - Traits.cacheable
+      - Traits.hasAcceptHeader
+    responses: 
+      200:
+        body:
+          application/json:
+            type: Customer[]
+          application/xml:
+            type: Customer[]
+      404:
+        body:
+          properties:
+            statusCode: string
+            message: string
+    
+  /{customer_id}:
+    type: member
+    get:
+    patch:
+    delete:
+      
+    /accounts:
+      get:
+        is: 
+          - Traits.hasGetResponse
+
+/accounts:
+  type: collection
+  post:
+
+  /{account_id}:
+    type: member
+    get:
+    put:
+    delete:
+
+    /transactions:
+      get:
+        is: 
+          - Traits.hasGetResponse
+
+/transactions:
+  type: collection
+  post:
+
+  /{transaction_id}:
+    type: member
+    get:
+
+
+

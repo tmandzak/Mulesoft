@@ -1,0 +1,16 @@
+#%RAML 1.0 Library
+usage: Use the following traits request and response headers and response status information
+
+traits:
+  cacheable: !include ../exchange_modules/68ef9520-24e9-4cf2-b2f5-620025690913/training-cacheable-trait/1.0.1/Cacheable.raml
+  hasAcceptHeader: !include ../traits/hasAcceptHeader.raml 
+  hasGetResponse:
+    responses: 
+      200:
+        body:
+          application/json:
+            type: <<resourcePathName | !singularize | !uppercamelcase>>[]
+      404:
+        body:
+          application/json:
+            type: !include ../datatypes/CustomErrorMessage.raml

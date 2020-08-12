@@ -1,0 +1,24 @@
+#%RAML 1.0 Overlay
+extends: ../acme-banking-api.raml
+usage: Spanish localization
+
+documentation:
+  - title: ACME API Bancario Home
+    content: |
+      **ACME Banca API** permite a los desarrolladores crear aplicaciones que hacen uso de la información del recurso a los métodos implementados en la API.
+      
+      Esta API contiene una funcionalidad que permite a los desarrolladores recuperar y manipular el _cliente_, la _cuenta_ y la información de la _transacción_. Echa un vistazo a la API [Portal]() para más detalles.
+  - title: Banco ACME Headline
+    content: |
+      **Banco ACME** es una _multinacional de servicios bancarios_ y financieros de la organización.
+      
+/customers:
+  get:
+    description: Recuperar una lista de clientes
+  post:
+    description: Agregue un nuevo cliente
+  /{customer_id}:
+    get:
+      description: Recuperar un cliente con una ID de cliente específico 
+    delete:
+      description: Eliminar un cliente específico
